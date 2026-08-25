@@ -1,12 +1,47 @@
-import { getUser } from "../services/api"
+import { useNavigate } from "react-router"
+import { get, post } from "../services/api"
+import React, { useState } from "react"
+
 
 export const Login = () => {
 
-  getUser()
+  const navigate = useNavigate()
+
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+
+  function handleEmail(event: React.ChangeEvent<HTMLInputElement>){
+    setEmail(event.target.value)
+  }
+
+  function handlePassword(event:React.ChangeEvent<HTMLInputElement>){
+    setPassword(event.target.value)
+  }
+
+  async function handleSubmit(event:React.SubmitEvent<HTMLFormElement>){
+    event.preventDefault()
+
+    const authenticated = true
+    try{
+
+      if (!authenticated)
+
+      await post("/auth/login", {email, password})
+
+      console.log('inició sesión');
+
+      
+
+    } catch {
+      console.log('datos inválidos');
+      
+    }
+  }
+  
 
   return (
     <div className="min-h-screen bg-slate-100 flex items-center justify-center px-4">
-      <form className="w-full max-w-md bg-white rounded-2xl shadow-lg border border-slate-200 p-8 space-y-6">
+      <form onSubmit={handleSubmit} className="w-full max-w-md bg-white rounded-2xl shadow-lg border border-slate-200 p-8 space-y-6">
         
         <div className="text-center space-y-2">
           <h1 className="text-2xl font-bold text-slate-900">
@@ -32,6 +67,7 @@ export const Login = () => {
               type="email"
               name="email"
               placeholder="you@example.com"
+              onChange={handleEmail}
               className="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
             />
           </div>
@@ -49,6 +85,7 @@ export const Login = () => {
               type="password"
               name="password"
               placeholder="••••••••"
+              onChange={handlePassword}
               className="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
             />
           </div>

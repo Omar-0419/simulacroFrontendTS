@@ -18,3 +18,8 @@ export interface IProduct{
     categoryId: string;
     images: [string]
 }
+
+export interface IAuth{
+    accessToken: string;
+    user: IUSer
+}

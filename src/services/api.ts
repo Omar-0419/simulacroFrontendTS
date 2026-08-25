@@ -1,10 +1,15 @@
-import axios from "axios";
+import axios from "axios"
+const API = 'http://localhost:3000'
 
-const API = 'http://localhost:3000/categories'
 
+export async function get<TResponse, TData>(endpoint: string, data: TData){
+    const response = await axios.get<TResponse>(`${API}${endpoint}`, data)
 
-export async function getUser() {
-    const response = await axios.get(API)
-    console.log(response);
-    
+    return response.data
+}
+
+export async function post<TResponse, TData>(endpoint: string, data: TData){
+    const response = await axios.post<TResponse>(`${API}${endpoint}`, data)
+
+    return response.data
 }
