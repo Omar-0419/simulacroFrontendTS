@@ -3,7 +3,7 @@ const API = 'http://localhost:3000'
 
 
 export async function get<TResponse, TData>(endpoint: string, data: TData){
-    const response = await axios.get<TResponse>(`${API}${endpoint}`, data)
+    const response = await axios.get<TResponse>(`${API}${endpoint}`,{params: data})
 
     return response.data
 }

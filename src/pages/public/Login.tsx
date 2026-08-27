@@ -1,14 +1,17 @@
 import { useNavigate } from "react-router"
-import { get, post } from "../services/api"
+import type { LoginData, Auth } from "../../types/interfaces"
 import React, { useState } from "react"
-
-
+import { post } from "../../services/api"
+import { useAuth } from "../../context/AuthContext"
+ 
 export const Login = () => {
 
-  const navigate = useNavigate()
+  
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const {login} = useAuth()
+  const navigate = useNavigate()
 
   function handleEmail(event: React.ChangeEvent<HTMLInputElement>){
     setEmail(event.target.value)
@@ -21,19 +24,14 @@ export const Login = () => {
   async function handleSubmit(event:React.SubmitEvent<HTMLFormElement>){
     event.preventDefault()
 
-    const authenticated = true
     try{
-
-      if (!authenticated)
-
-      await post("/auth/login", {email, password})
-
-      console.log('inició sesión');
-
-      
-
-    } catch {
-      console.log('datos inválidos');
+      const response = await post<Auth, LoginData>('/auth/login', {email, password})
+      login(response.accessToken,response.user)
+    
+      navigate('/home')
+    } catch (error){
+      console.log(error)
+      alert('Datos no válidos')
       
     }
   }
@@ -45,6 +43,8 @@ export const Login = () => {
         
         <div className="text-center space-y-2">
           <h1 className="text-2xl font-bold text-slate-900">
+ 
+ 
             Sign in
           </h1>
 
