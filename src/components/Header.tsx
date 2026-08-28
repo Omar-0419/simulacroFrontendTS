@@ -17,7 +17,7 @@ export const Header = () => {
     <header className="bg-blue-500 text-white px-6 py-4">
         <nav className="flex items-center justify-between">
             <div>
-              <h2>Hello {user.name}</h2>
+              <h2>Hello, {user.name}</h2>
             </div>
             <div className="flex gap-4">
                 <Link to={'/home'}>Home</Link>

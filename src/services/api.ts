@@ -2,8 +2,8 @@ import axios from "axios"
 const API = 'http://localhost:3000'
 
 
-export async function get<TResponse, TData>(endpoint: string, data: TData){
-    const response = await axios.get<TResponse>(`${API}${endpoint}`,{params: data})
+export async function get<TResponse>(endpoint: string){
+    const response = await axios.get<TResponse>(`${API}${endpoint}`)
 
     return response.data
 }
