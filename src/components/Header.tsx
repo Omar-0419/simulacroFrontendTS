@@ -20,10 +20,10 @@ export const Header = () => {
               <h2>Hello, {user.name}</h2>
             </div>
             <div className="flex gap-4">
-                <Link to={'/home'}>Home</Link>
-                <Link to={'/products'}>Products</Link>
-                <Link to={'/categories'}>Categories</Link>
-                <Link to={'/favorites'}>Favorites</Link>
+                <Link className="hover:text-blue-200" to={'/home'}>Home</Link>
+                <Link className="hover:text-blue-200" to={'/products'}>Products</Link>
+                <Link className="hover:text-blue-200" to={'/categories'}>Categories</Link>
+                <Link className="hover:text-blue-200" to={'/favorites'}>Favorites</Link>
             </div>
 
             <button onClick={Logout} className="bg-red-600 px-4 py-2 rounded-md hover:bg-red-500 cursor-pointer">Logout</button>
