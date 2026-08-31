@@ -10,6 +10,12 @@ export interface LoginData{
     password: string;
 }
 
+export interface RegisterData{
+    name: string;
+    email: string;
+    password: string;
+} 
+
 export interface Auth{
     accessToken: string;
     user: User
@@ -18,7 +24,14 @@ export interface Auth{
 export interface Category{
     id: string;
     name: string;
-    description: string;
+    description?: string;
+}
+
+export type CreateCategory = Omit<Category, 'id'>
+
+export interface CategoryFormProps{
+    onClose: () => void;
+    category?: Category;
 }
 
 export interface Product{
@@ -29,4 +42,28 @@ export interface Product{
     stock: number;
     categoryId: string;
     images: string[];
+}
+
+export interface CreateProduct{
+    // id: string;
+    name: string;
+    description: string;
+    price: number;
+    stock: number;
+    // category: Category;
+    categoryId: string;
+    images: string[];
+}
+
+export interface ProductResponse{
+    data: Product[];
+    total: number;
+    page: number;
+    limit: number;
+    totalPages: number;
+}
+
+export interface ProductFormProps{
+    onClose: () => void;
+    product?: Product;
 }

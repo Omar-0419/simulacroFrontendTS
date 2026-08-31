@@ -1,6 +1,7 @@
-import { get } from "../../../services/api"
+import { get, del } from "../../../services/api"
 
-import { CategoryForm } from "../../../components/CategoryForm"
+import { CategoryFormCreate } from "../../../components/forms/CategoryFormCreate"
+import { CategoryFormEdit } from "../../../components/forms/CategoryFormEdit"
 
 import { useState, useEffect } from "react"
 import { Link } from "react-router"
@@ -20,6 +21,16 @@ export const CategoriesAdmin = () => {
       setCategories(data)
     })
   }, [])
+  
+  
+  const [showFormCategory, setShowFormCategory] = useState(false)
+  
+  const [showEditForm, setShowEditForm] = useState(false)
+  const [selectedCategory, setSelectedCategory] = useState<Category | null>(null)
+
+  async function deleteCategory(id: string){
+    const response = await del<Category>(`/categories/${id}`)
+  }
 
 
   return (
@@ -59,6 +70,7 @@ export const CategoriesAdmin = () => {
           hover:shadow-md
           cursor-pointer
         "
+        onClick={() => setShowFormCategory(true)}
       >
         Create category
       </button>
@@ -100,11 +112,22 @@ export const CategoriesAdmin = () => {
               </span>
 
               <div>
-                <button className="m-1 w-15 cursor-pointer rounded-lg border border-red-400 text-red-400 hover:bg-red-400 hover:text-amber-50">
+                <button className="m-1 w-15 cursor-pointer rounded-lg border border-red-400 text-red-400 hover:bg-red-400 hover:text-amber-50" onClick={(e) => {
+                  e.preventDefault(); 
+                  e.stopPropagation()
+                  deleteCategory(category.id)
+                  alert(`The category called "${category.name}" has been deleted`)
+                  }}>
                   Delete
                 </button>
 
-                <button className="m-1 w-15 cursor-pointer rounded-lg border border-amber-400 text-amber-400 hover:bg-amber-400 hover:text-amber-50">
+                <button className="m-1 w-15 cursor-pointer rounded-lg border border-amber-400 text-amber-400 hover:bg-amber-400 hover:text-amber-50" 
+                onClick={(e) => {
+                  e.preventDefault(); 
+                  e.stopPropagation()
+                  setSelectedCategory(category)
+                  setShowEditForm(true)
+                  }}>
                   Edit
                 </button>
               </div>
@@ -114,7 +137,23 @@ export const CategoriesAdmin = () => {
       </div>
     )}
   </div>
-  <CategoryForm/>
+  {showFormCategory && (
+  <CategoryFormCreate
+    onClose={() => setShowFormCategory(false)}
+  />
+)}
+
+{showEditForm && selectedCategory && (
+  <CategoryFormEdit
+    category={selectedCategory}
+    onClose={() => {
+      setShowEditForm(false)
+      setSelectedCategory(null)
+    }}
+  />
+)}
+
+  
 </div>
 
   )

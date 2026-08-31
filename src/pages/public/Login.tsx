@@ -1,50 +1,49 @@
-import { useNavigate } from "react-router"
+import { useNavigate, Link } from "react-router"
 import type { LoginData, Auth } from "../../types/interfaces"
 import React, { useState } from "react"
 import { post } from "../../services/api"
 import { useAuth } from "../../context/AuthContext"
- 
-export const Login = () => {
 
-  
+
+export const Login = () => {
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const {login} = useAuth()
+  const { login } = useAuth()
   const navigate = useNavigate()
 
-  function handleEmail(event: React.ChangeEvent<HTMLInputElement>){
+  function handleEmail(event: React.ChangeEvent<HTMLInputElement>) {
     setEmail(event.target.value)
   }
 
-  function handlePassword(event:React.ChangeEvent<HTMLInputElement>){
+  function handlePassword(event: React.ChangeEvent<HTMLInputElement>) {
     setPassword(event.target.value)
   }
 
-  async function handleSubmit(event:React.SubmitEvent<HTMLFormElement>){
+  async function handleSubmit(event: React.SubmitEvent<HTMLFormElement>) {
     event.preventDefault()
 
-    try{
-      const response = await post<Auth, LoginData>('/auth/login', {email, password})
-      login(response.accessToken,response.user)
-    
+    try {
+      const response = await post<Auth, LoginData>('/auth/login', { email, password })
+      login(response.accessToken, response.user)
+
       navigate('/home')
-    } catch (error){
+    } catch (error) {
       console.log(error)
       alert('Datos no válidos')
-      
+
     }
   }
-  
+
 
   return (
     <div className="min-h-screen bg-slate-100 flex items-center justify-center px-4">
       <form onSubmit={handleSubmit} className="w-full max-w-md bg-white rounded-2xl shadow-lg border border-slate-200 p-8 space-y-6">
-        
+
         <div className="text-center space-y-2">
           <h1 className="text-2xl font-bold text-slate-900">
- 
- 
+
+
             Sign in
           </h1>
 
@@ -102,15 +101,25 @@ export const Login = () => {
 
         <button
           type="submit"
-          className="w-full rounded-lg bg-blue-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 active:bg-blue-800
-          cursor-pointer"
+          className="w-full rounded-lg bg-blue-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 active:bg-blue-800 cursor-pointer"
         >
           Sign in
         </button>
 
+        <p className="text-center text-sm text-slate-500">
+          Don't have an account?{" "}
+          <Link
+            to="/register"
+            className="font-medium text-blue-600 hover:text-blue-700 hover:underline"
+          >
+            Sign up
+          </Link>
+        </p>
+
         <p className="text-center text-xs text-slate-400">
           Product Management System
         </p>
+
       </form>
     </div>
   )

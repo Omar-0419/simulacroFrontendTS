@@ -6,6 +6,7 @@ type authContextType ={
     isAusthenticated: boolean,
     login(token:string, user:User): void
     logout():void
+    register(token:string, user:User): void
 }
 
 export const AuthContext = createContext<authContextType|null>(null)
@@ -21,11 +22,11 @@ function AuthProvider({children}:{children: React.ReactNode}){
         return JSON.parse(storedUser)
     })
 
-    function login(token:string, User:User){
+    function login(token:string, user:User){
         localStorage.setItem("accessToken", token)
-        localStorage.setItem("User",JSON.stringify(User))
+        localStorage.setItem("User",JSON.stringify(user))
         localStorage.setItem("is authenticated", "true")
-        setUser(User)
+        setUser(user)
         setIsAuthenticated(true)
     }
 
@@ -35,8 +36,16 @@ function AuthProvider({children}:{children: React.ReactNode}){
         setIsAuthenticated(false)
     }
 
+    function register(token: string, user:User){
+        localStorage.setItem("accessToken", token)
+        localStorage.setItem("User",JSON.stringify(user))
+        localStorage.setItem("is authenticated", "true")
+        setUser(user)
+        setIsAuthenticated(true)
+    }
 
-    return(<AuthContext.Provider value={{user,isAusthenticated,login,logout}}>  {children} </AuthContext.Provider>)
+
+    return(<AuthContext.Provider value={{user,isAusthenticated,login,logout, register}}>  {children} </AuthContext.Provider>)
 
 }
 

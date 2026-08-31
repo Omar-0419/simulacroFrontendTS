@@ -1,7 +1,31 @@
-import { useState, type FormEvent } from "react"
+import React, { useState } from "react"
 
-export const CategoryForm = () => {
+import type { Category, CreateCategory, CategoryFormProps } from "../../types/interfaces"
 
+import { post } from "../../services/api"
+
+export const CategoryFormCreate = ({onClose, category }: CategoryFormProps) => {
+
+    const [name, setName] = useState(category?.name || '')
+    const [description, setDescription] = useState(category?.description || '')
+
+    async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+        event.preventDefault()
+
+        try {
+            const response = await post<Category, CreateCategory>('/categories', {name, description})
+
+            alert('The category has been created!')
+
+            onClose()
+
+            window.location.reload()
+        } catch (error) {
+            console.log(error);
+            
+        }
+
+    }
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 px-4">
@@ -26,13 +50,14 @@ export const CategoryForm = () => {
                     <button
                         type="button"
                         className="text-2xl font-semibold text-slate-400 transition hover:text-slate-700 cursor-pointer"
+                        onClick={onClose}
                     >
                         ×
                     </button>
                 </div>
 
                 {/* Formulario */}
-                <form className="space-y-5">
+                <form className="space-y-5" onSubmit={handleSubmit}>
 
                     {/* Nombre */}
                     <div>
@@ -50,6 +75,8 @@ export const CategoryForm = () => {
                             placeholder="e.g. Electronics"
                             required
                             className="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                            value={name}
+                            onChange={(event) => setName(event.target.value)}
                         />
                     </div>
 
@@ -67,8 +94,9 @@ export const CategoryForm = () => {
                             name="description"
                             rows={4}
                             placeholder="Describe this category..."
-                            required
                             className="w-full resize-none rounded-lg border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                            value={description}
+                            onChange={(event) => setDescription(event.target.value)}
                         />
                     </div>
 
@@ -76,14 +104,15 @@ export const CategoryForm = () => {
                     <div className="flex justify-end gap-3 border-t border-slate-100 pt-5">
                         <button
                             type="button"
-                            className="rounded-lg border border-slate-300 px-5 py-2.5 font-medium text-slate-600 transition hover:bg-slate-100"
+                            className="rounded-lg border border-slate-300 px-5 py-2.5 font-medium text-slate-600 transition hover:bg-slate-100 cursor-pointer"
+                            onClick={onClose}
                         >
                             Cancel
                         </button>
 
                         <button
                             type="submit"
-                            className="rounded-lg bg-blue-600 px-5 py-2.5 font-semibold text-white shadow-sm transition hover:bg-blue-700 hover:shadow-md"
+                            className="rounded-lg bg-blue-600 px-5 py-2.5 font-semibold text-white shadow-sm transition hover:bg-blue-700 hover:shadow-md cursor-pointer"
                         >
                             Create category
                         </button>

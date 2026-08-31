@@ -15,12 +15,18 @@ import { Products } from "../pages/private/Products";
 import { requirsAuth } from "../loaders/authLoader";
 
 import { MainLayout } from "../layouts/MainLayout"; 
+import { Register } from "../pages/public/Register";
 
 
 export const router = createBrowserRouter([
     {
         path: '/',
         element: <Login/>
+    },
+
+    {
+        path: '/register',
+        element: <Register/>
     },
 
     {
